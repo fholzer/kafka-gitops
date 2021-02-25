@@ -1,9 +1,11 @@
 FROM gradle:4.10-jdk8 as builder
-WORKDIR /usr/app/src/
+# copy first so /usr/app/src has correct owner, then set WD
 COPY --chown=1000:1000 . /usr/app/src/
-RUN ls -la
+WORKDIR /usr/app/src/
+
 RUN gradle --info --stacktrace assemble
 RUN ./build.sh
+
 
 FROM openjdk:8-jre-slim
 
