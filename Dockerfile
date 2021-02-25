@@ -1,7 +1,8 @@
 FROM gradle:4.10-jdk8 as builder
 WORKDIR /usr/app/src/
 COPY --chown=1000:1000 . /usr/app/src/
-RUN gradle assemble
+RUN ls -la
+RUN gradle --info --stacktrace assemble
 RUN ./build.sh
 
 FROM openjdk:8-jre-slim
