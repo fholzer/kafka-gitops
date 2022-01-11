@@ -44,9 +44,9 @@ public abstract class ApplicationService extends ServiceDetails {
             allTopics.forEach(topic -> acls.add(generateDescribeAcl(topic, getPrincipal())));
         }
 
-        if (!getConsumes().isEmpty()) {
+        String pattern = getPattern().isPresent() ? getPattern().get() : "LITERAL";
+        if (!getConsumes().isEmpty() || "PREFIXED".equals(pattern)) {
             String groupId = getGroupId().isPresent() ? getGroupId().get() : options.getServiceName();
-            String pattern = getPattern().isPresent() ? getPattern().get() : "LITERAL";
             acls.add(generateConsumerGroupAcl(groupId, getPrincipal(), "READ", pattern));
         }
         return acls;
